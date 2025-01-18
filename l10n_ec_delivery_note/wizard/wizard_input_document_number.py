@@ -51,7 +51,7 @@ class WizardAbstractDeliveryNote(models.AbstractModel):
     @api.model
     def default_get(self, fields_list):
         picking_model = self.env["stock.picking"]
-        res = super(WizardAbstractDeliveryNote, self).default_get(fields_list)
+        res = super().default_get(fields_list)
         company = self.env.company
         picking_id = (
             res.get("picking_id", False)
@@ -112,13 +112,13 @@ class StockBackorderConfirmation(models.TransientModel):
     _name = "stock.backorder.confirmation"
 
     def process(self):
-        res = super(StockBackorderConfirmation, self).process()
+        res = super().process()
         if self.picking_id.l10n_ec_create_delivery_note:
             self.create_delivery_note()
         return res
 
     def process_cancel_backorder(self):
-        res = super(StockBackorderConfirmation, self).process_cancel_backorder()
+        res = super().process_cancel_backorder()
         if self.picking_id.l10n_ec_create_delivery_note:
             self.create_delivery_note()
         return res
@@ -129,7 +129,7 @@ class StockImmediateTransfer(models.TransientModel):
     _name = "stock.immediate.transfer"
 
     def process(self):
-        res = super(StockImmediateTransfer, self).process()
+        res = super().process()
         if self.picking_id.l10n_ec_create_delivery_note:
             if self.picking_id.sale_id and (
                 self.picking_id.location_id
@@ -137,14 +137,9 @@ class StockImmediateTransfer(models.TransientModel):
             ):
                 raise UserError(
                     _(
-                        "The delivery note: %(picking_name)s cannot be processed in internal "
-                        "transfers created from the sales order: %(sale_name)s"
-                    )
-                    % (
-                        {
-                            "picking_name": self.picking_id.name,
-                            "sale_name": self.picking_id.sale_id.name,
-                        }
+                        f"The delivery note: {self.picking_id.name} "
+                        "cannot be processed in internal transfers created "
+                        "from the sales order: {self.picking_id.sale_id.name}"
                     )
                 )
             self.create_delivery_note()
