@@ -73,12 +73,8 @@
                     class="alert alert-info"
                     role="alert"
                     style="margin-bottom:0px;"
-                    invisible="edi_web_services_to_process in ['', False] or state == 'draft'"
+                    invisible="state == 'draft'"
                 >
-                    <div
-                    >The invoice will be processed asynchronously by the following E-invoicing service :
-                        <field name="edi_web_services_to_process" class="oe_inline" />
-                    </div>
                     <button
                         name="action_process_edi_web_services"
                         type="object"

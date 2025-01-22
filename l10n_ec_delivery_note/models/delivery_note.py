@@ -148,10 +148,6 @@ class DeliveryNote(models.Model):
     )
     edi_error_message = fields.Html()
 
-    edi_web_services_to_process = fields.Text(
-        help="Technical field to display the documents that "
-        "will be processed by the CRON",
-    )
     l10n_ec_authorization_date = fields.Datetime(
         string="Access Key(EC)",
         store=True,
